@@ -1,19 +1,18 @@
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Button,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
+    ActivityIndicator,
+    Button,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
 
-const InfiniteScrollFlatList = () => {
+const InfiniteScrollList = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const [dataDataAvailable, setDataAvailable] = useState(true);
+  const [dataAvailable, setDataAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
   const [pageLoader, setPageLoader] = useState(true);
 
@@ -46,50 +45,49 @@ const InfiniteScrollFlatList = () => {
     fetchPosts();
   }, [page]);
 
-  const endPage = () => {
-    if (!loading && dataDataAvailable) {
+  const handleScroll = ({nativeEvent}) => {
+    const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
+    if (
+        layoutMeasurement.height + contentOffset.y >= contentSize.height &&
+      !loading &&
+      dataAvailable
+    ) {
       setPage(prevPage => prevPage + 1);
     }
   };
+
   const pageReset = () => {
     setPosts([]);
-    setPage(1), setDataAvailable(true), setPageLoader(true);
+    setPage(1);
+    setDataAvailable(true);
+    setPageLoader(true);
   };
 
-  const renderPost = ({item}) => (
-    <View style={styles.post}>
-      <Text>ID: {item.id}</Text>
-      <Text>Title: {item.title}</Text>
-      <Text>User ID: {item.userId}</Text>
-      <Text>Tags: {item.tags}</Text>
-      <Text style={{fontSize: 12, color: 'red'}}>Body: {item.body}</Text>
+  const renderPost = post => (
+    <View key={post.id} style={styles.post}>
+      <Text>ID: {post.id}</Text>
+      <Text>Title: {post.title}</Text>
+      <Text>User ID: {post.userId}</Text>
+      <Text>Tags: {post.tags}</Text>
+      <Text style={{fontSize: 12, color: 'red'}}>Body: {post.body}</Text>
     </View>
   );
+
   if (pageLoader) {
     return (
-      <React.Fragment>
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator size="large" />
-        </View>
-      </React.Fragment>
+      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+        <ActivityIndicator size="large" />
+      </View>
     );
   }
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={posts}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={renderPost}
-        onEndReached={endPage}
-        ListFooterComponent={loading && <ActivityIndicator />}
-      />
-      <Button
-        title="Reset"
-        onPress={() => {
-          pageReset();
-        }}
-        color="red"
-      />
+      <ScrollView onScroll={handleScroll}>
+        {posts.map(renderPost)}
+        {loading && <ActivityIndicator />}
+      </ScrollView>
+      <Button title="Reset" onPress={pageReset} color="red" />
     </View>
   );
 };
@@ -106,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InfiniteScrollFlatList;
+export default InfiniteScrollList;
