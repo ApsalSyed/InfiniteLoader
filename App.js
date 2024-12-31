@@ -1,12 +1,9 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
-import InfiniteScrollFlatList from './src/infinite-scroll-flatlist';
+import AppNavigation from './src/nav/navigation';
 
 function App() {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <InfiniteScrollFlatList />
-    </SafeAreaView>
+      <AppNavigation />
   );
 }
 
