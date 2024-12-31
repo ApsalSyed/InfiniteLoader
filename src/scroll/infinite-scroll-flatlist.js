@@ -52,8 +52,12 @@ const InfiniteScrollFlatList = () => {
     }
   };
   const pageReset = () => {
-    setPosts([]);
-    setPage(1), setDataAvailable(true), setPageLoader(true);
+    try {
+      setPosts([]);
+      setPage(1), setDataAvailable(true), setPageLoader(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderPost = ({item}) => (
@@ -74,7 +78,7 @@ const InfiniteScrollFlatList = () => {
       </React.Fragment>
     );
   }
-  return (
+  return dataDataAvailable ? (
     <View style={styles.container}>
       <FlatList
         data={posts}
@@ -89,10 +93,22 @@ const InfiniteScrollFlatList = () => {
           pageReset();
         }}
         color="red"
+        disabled={!dataDataAvailable}
       />
+    </View>
+  ) : (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text
+        style={{
+          fontSize: 20,
+          color: 'red',
+        }}>
+        No data
+      </Text>
     </View>
   );
 };
+  
 
 const styles = StyleSheet.create({
   container: {
