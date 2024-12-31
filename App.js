@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import InfiniteScrollFlatList from './src/infinite-scroll';
+import InfiniteScrollFlatList from './src/infinite-scroll-flatlist';
 
 function App() {
   return (
