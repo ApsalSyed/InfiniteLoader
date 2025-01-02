@@ -58,6 +58,7 @@ const InfiniteScrollFlatList = () => {
       setPage(1);
       setDataAvailable(true);
       setPageLoader(true);
+      fetchPosts();
     } catch (error) {
       console.log(error);
     }
