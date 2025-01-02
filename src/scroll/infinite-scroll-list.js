@@ -61,6 +61,7 @@ const InfiniteScrollList = () => {
     setPage(1);
     setDataAvailable(true);
     setPageLoader(true);
+    fetchPosts();
   };
 
   const renderPost = (post, index) => (
