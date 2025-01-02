@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    ActivityIndicator,
-    Button,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View
+  ActivityIndicator,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 const InfiniteScrollList = () => {
@@ -48,7 +48,7 @@ const InfiniteScrollList = () => {
   const handleScroll = ({nativeEvent}) => {
     const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
     if (
-        layoutMeasurement.height + contentOffset.y >= contentSize.height &&
+      layoutMeasurement.height + contentOffset.y >= contentSize.height &&
       !loading &&
       dataAvailable
     ) {
@@ -63,31 +63,45 @@ const InfiniteScrollList = () => {
     setPageLoader(true);
   };
 
-  const renderPost = post => (
-    <View key={post.id} style={styles.post}>
-      <Text>ID: {post.id}</Text>
-      <Text>Title: {post.title}</Text>
-      <Text>User ID: {post.userId}</Text>
-      <Text>Tags: {post.tags}</Text>
-      <Text style={{fontSize: 12, color: 'red'}}>Body: {post.body}</Text>
+  const renderPost = (post, index) => (
+    <View key={`${post.id}-${index}`} style={styles.post}>
+      <Text style={styles.postMeta}>ID: {post.id}</Text>
+      <Text style={styles.postTitle}>{post.title}</Text>
+      <Text style={styles.postMeta}>User ID: {post.userId}</Text>
+      <Text style={styles.postTags}>Tags: {post.tags}</Text>
+      <Text style={styles.postBody}>{post.body}</Text>
     </View>
   );
 
   if (pageLoader) {
     return (
-      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-        <ActivityIndicator size="large" />
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView onScroll={handleScroll}>
+      <ScrollView
+        onScroll={handleScroll}
+        contentContainerStyle={styles.scrollViewContent}>
         {posts.map(renderPost)}
-        {loading && <ActivityIndicator />}
+        {loading && (
+          <ActivityIndicator
+            size="large"
+            color="#007bff"
+            style={styles.loader}
+          />
+        )}
       </ScrollView>
-      <Button title="Reset" onPress={pageReset} color="red" />
+      <Button
+        title="Reset"
+        onPress={pageReset}
+        color="red"
+        disabled={!dataAvailable}
+        style={styles.resetButton}
+      />
     </View>
   );
 };
@@ -95,12 +109,51 @@ const InfiniteScrollList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 16,
+    backgroundColor: 'lightblue', 
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
+  },
+  scrollViewContent: {
+    paddingBottom: 80,
   },
   post: {
-    backgroundColor: 'pink',
-    marginBottom: 10,
-    padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginBottom: 16,
+    padding: 20,
+  },
+  postTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  postMeta: {
+    fontSize: 14,
+    color: '#6c757d',
+    marginBottom: 6,
+  },
+  postTags: {
+    fontSize: 14,
+    color: '#007bff',
+    marginBottom: 12,
+  },
+  postBody: {
+    fontSize: 12,
+    color: 'black',
+    lineHeight: 18,
+  },
+  loader: {
+    marginTop: 20,
+  },
+  resetButton: {
+    marginTop: 16,
+    borderRadius: 8,
   },
 });
 
