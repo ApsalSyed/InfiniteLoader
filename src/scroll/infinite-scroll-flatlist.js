@@ -13,7 +13,7 @@ import {
 const InfiniteScrollFlatList = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const [dataDataAvailable, setDataAvailable] = useState(true);
+  const [dataAvailable, setDataAvailable] = useState(true);
   const [loading, setLoading] = useState(false);
   const [pageLoader, setPageLoader] = useState(true);
 
@@ -47,14 +47,17 @@ const InfiniteScrollFlatList = () => {
   }, [page]);
 
   const endPage = () => {
-    if (!loading && dataDataAvailable) {
+    if (!loading && dataAvailable) {
       setPage(prevPage => prevPage + 1);
     }
   };
+
   const pageReset = () => {
     try {
       setPosts([]);
-      setPage(1), setDataAvailable(true), setPageLoader(true);
+      setPage(1);
+      setDataAvailable(true);
+      setPageLoader(true);
     } catch (error) {
       console.log(error);
     }
@@ -62,63 +65,105 @@ const InfiniteScrollFlatList = () => {
 
   const renderPost = ({item}) => (
     <View style={styles.post}>
-      <Text>ID: {item.id}</Text>
-      <Text>Title: {item.title}</Text>
-      <Text>User ID: {item.userId}</Text>
-      <Text>Tags: {item.tags}</Text>
-      <Text style={{fontSize: 12, color: 'red'}}>Body: {item.body}</Text>
+      <Text style={styles.postTitle}>{item.title}</Text>
+      <Text style={styles.postMeta}>User ID: {item.id}</Text>
+      <Text style={styles.postMeta}>User ID: {item.userId}</Text>
+      <Text style={styles.postTags}>Tags: {item.tags.join(', ')}</Text>
+      <Text style={styles.postBody}>{item.body}</Text>
     </View>
   );
+
   if (pageLoader) {
     return (
-      <React.Fragment>
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <ActivityIndicator size="large" />
-        </View>
-      </React.Fragment>
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
     );
   }
-  return dataDataAvailable ? (
-    <View style={styles.container}>
+
+  return dataAvailable ? (
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={posts}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={renderPost}
         onEndReached={endPage}
-        ListFooterComponent={loading && <ActivityIndicator />}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          loading && <ActivityIndicator size="large" color="#007bff" />
+        }
       />
       <Button
         title="Reset"
-        onPress={() => {
-          pageReset();
-        }}
+        onPress={pageReset}
         color="red"
-        disabled={!dataDataAvailable}
+        disabled={!dataAvailable}
+        style={styles.resetButton}
       />
-    </View>
+    </SafeAreaView>
   ) : (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text
-        style={{
-          fontSize: 20,
-          color: 'red',
-        }}>
-        No data
-      </Text>
+    <View style={styles.noDataContainer}>
+      <Text style={styles.noDataText}>No data available</Text>
     </View>
   );
 };
-  
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    backgroundColor: '#f8f9fa',
+    padding: 16,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
   },
   post: {
-    backgroundColor: 'pink',
-    marginBottom: 10,
-    padding: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginBottom: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: {width: 0, height: 2},
+    shadowRadius: 4,
+  },
+  postTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  postMeta: {
+    fontSize: 14,
+    color: '#6c757d',
+    marginBottom: 4,
+  },
+  postTags: {
+    fontSize: 14,
+    color: '#007bff',
+    marginBottom: 8,
+  },
+  postBody: {
+    fontSize: 12,
+    color: '#495057',
+    lineHeight: 18,
+  },
+  resetButton: {
+    marginTop: 16,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#dc3545',
+    fontWeight: '600',
   },
 });
 
