@@ -1,8 +1,43 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# Infinite Loader Application  
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+This is a React Native application that features **infinite scrolling** using both `FlatList` and `ListView`. The application automatically loads the next set of data when the user scrolls to the end of the current list.  
+
+---  
+
+## Features  
+
+- Implements **infinite scrolling** with two methods:  
+  - `FlatList` for modern, efficient lists.  
+  - `ListView` for legacy support.  
+- Seamless and smooth loading of paginated data.  
+- Optimized for large datasets with lazy loading.  
+- Clean and user-friendly interface.  
+
+---  
+
+## Getting Started  
+
+Follow these instructions to get the application up and running on your local machine.  
+
+### Prerequisites  
+
+Before you begin, ensure you have:  
+
+- A system set up for [React Native Development](https://reactnative.dev/docs/environment-setup).  
+- Node.js and npm/yarn installed.  
+- Android Studio and/or Xcode installed for emulators.  
+
+---  
+
+### Installation  
+
+1. Clone this repository:  
+
+   ```bash  
+   git clone https://github.com/ApsalSyed/InfiniteLoader.git  
+   cd InfiniteLoader  
 
 ## Step 1: Start the Metro Server
 
@@ -46,31 +81,78 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
+## Step 3: Application Workflow
 
-Now that you have successfully run the app, let's modify it.
+Infinite Loader Implementation
+The application initializes by fetching data from a mock API or server.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+The list renders the initial set of data.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+As the user scrolls to the bottom of the list:
 
-## Congratulations! :tada:
+An onEndReached event is triggered.
+The application fetches the next page of data.
+New data is appended to the existing list seamlessly.
+The infinite loader implementation is provided through two components:
 
-You've successfully run and modified your React Native App. :partying_face:
+Infinite Scroll with FlatList: Located in src/scroll/infinite-scroll-flatlist.js.
+Infinite Scroll with ListView: Located in src/scroll/infinite-scroll-list.js.
 
-### Now what?
+### Code Structure
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+📂 src  
+├── 📂 scroll  
+│   ├── 📄 infinite-scroll-flatlist.js  # Infinite scrolling with FlatList  
+│   └── 📄 infinite-scroll-list.js      # Infinite scrolling with ListView  
+├── 📄 App.tsx                          # Main entry point  
+└── 📄 dataService.js                   # Handles paginated data fetching  
 
-# Troubleshooting
+### How to Test
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Navigate to either src/scroll/infinite-scroll-flatlist.js or src/scroll/infinite-scroll-list.js to switch between components.
+
+Test with varying dataset sizes to observe performance.
+
+### Modifying the App
+
+To customize the app:
+
+Open the App.js file in your text editor.
+Make changes to the implementation or UI.
+Reload the app:
+For Android: Press <kbd>R</kbd> twice or open the Developer Menu (<kbd>Ctrl</kbd> + <kbd>M</kbd> on Windows/Linux, or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> on macOS).
+For iOS: Press <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in the iOS Simulator.
+
+### Troubleshooting
+
+If you encounter issues:
+
+Verify that your environment setup is complete by following the React Native Environment Setup Guide.
+Check for dependencies or version mismatches.
+Refer to the official Troubleshooting Guide.
 
 # Learn More
 
-To learn more about React Native, take a look at the following resources:
+Explore these resources to learn more about React Native:
+
+React Native Documentation
+FlatList Documentation
+ListView Documentation
+React Native Blog
+
+# License
+This project is licensed under the MIT License.
+
+
+# Acknowledgements
+Inspired by the React Native community.
+Special thanks to contributors and developers for maintaining open-source libraries used in this project.
+vbnet
+Copy code
+
+
+###### "This version uses `.js` files to reflect your JavaScript implementation. Let me know if you need further updates!"
+
 
 - [React Native Website](https://reactnative.dev) - learn more about React Native.
 - [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
