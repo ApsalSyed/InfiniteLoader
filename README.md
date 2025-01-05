@@ -104,7 +104,7 @@ Infinite Scroll with ListView: Located in src/scroll/infinite-scroll-list.js.
 ├── 📂 scroll  
 │   ├── 📄 infinite-scroll-flatlist.js  # Infinite scrolling with FlatList  
 │   └── 📄 infinite-scroll-list.js      # Infinite scrolling with ListView  
-├── 📄 App.tsx                          # Main entry point  
+├── 📄 App.js                           # Main entry point  
 └── 📄 dataService.js                   # Handles paginated data fetching  
 
 ### How to Test
